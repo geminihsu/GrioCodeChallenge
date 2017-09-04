@@ -1,23 +1,16 @@
 package gemini.griocodechallenge;
 
-import android.app.Activity;
-
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.app.AppCompatActivity;
+
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import gemini.griocodechallenge.R;
+
+
+import gemini.griocodechallenge.fragment.Fragment_loser;
+import gemini.griocodechallenge.fragment.Fragment_winner;
+import gemini.griocodechallenge.model.Github;
 
 
 /**
@@ -25,17 +18,27 @@ import gemini.griocodechallenge.R;
  */
 
 public class RepoListActivity extends AppCompatActivity {
+    public final static String GithubUser = "GithubUser";
+
     private SectionsPageAdapter mSectionsPageAdapter;
 
     private ViewPager mViewPager;
+
+    private String winnerUser;
+    private String loserUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.repolist_activity);
-        //Log.d(TAG, "onCreate: Starting.");
 
-        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+        //Log.d(TAG, "onCreate: Starting.");
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null) {
+            winnerUser = bundle.getString(MainActivity.BUNDLE_WINNER);
+            loserUser = bundle.getString(MainActivity.BUNDLE_LOSER);
+        }
+            mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -47,8 +50,18 @@ public class RepoListActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Tab1Fragment(), getString(R.string.winner));
-        adapter.addFragment(new Tab2Fragment(), getString(R.string.loser));
+        Fragment winner = new Fragment_winner();
+        Bundle b1 = new Bundle();
+        b1.putString(GithubUser, winnerUser);
+        winner.setArguments(b1);
+
+        Fragment loser = new Fragment_winner();
+        Bundle b2 = new Bundle();
+        b2.putString(GithubUser, loserUser);
+        loser.setArguments(b2);
+
+        adapter.addFragment(winner, getString(R.string.winner));
+        adapter.addFragment(loser, getString(R.string.loser));
         //adapter.addFragment(new Tab3Fragment(), "TAB3");
         viewPager.setAdapter(adapter);
     }

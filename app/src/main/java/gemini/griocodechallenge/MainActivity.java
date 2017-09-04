@@ -1,21 +1,24 @@
 package gemini.griocodechallenge;
 
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-import gemini.griocodechallenge.model.Github;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import service.GithubService;
-import service.ServiceFactory;
 
 public class MainActivity extends AppCompatActivity {
+    public final static String BUNDLE_WINNER = "winner";
+    public final static String BUNDLE_LOSER = "loser";
+
+
     private Button fetch;
+    private TextView winner;
+    private TextView loser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,32 +37,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void findViews()
     {
+        winner = (TextView) findViewById(R.id.account_one);
+        loser = (TextView) findViewById(R.id.account_two);
         fetch = (Button) findViewById(R.id.start);
         fetch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GithubService service = ServiceFactory.createRetrofitService(GithubService.class, GithubService.SERVICE_ENDPOINT);
-                for(String login : Data.githubList) {
-                    service.getUser(login)
-                            .subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Subscriber<Github>() {
-                                @Override
-                                public final void onCompleted() {
-                                    // do nothing
-                                }
-
-                                @Override
-                                public final void onError(Throwable e) {
-                                    Log.e("GithubDemo", e.getMessage());
-                                }
-
-                                @Override
-                                public final void onNext(Github response) {
-                                   // mCardAdapter.addData(response);
-                                }
-                            });
-                }
+                Intent intent = new Intent(getApplicationContext(), RepoListActivity.class);
+                Bundle data = new Bundle();
+                data.putString(BUNDLE_WINNER,winner.getText().toString());
+                data.putString(BUNDLE_LOSER,loser.getText().toString());
+                intent.putExtras(data);
+                startActivity(intent);
             }
         });
     }

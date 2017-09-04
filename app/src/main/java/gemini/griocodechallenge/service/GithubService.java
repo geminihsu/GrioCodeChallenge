@@ -1,4 +1,4 @@
-package service;
+package gemini.griocodechallenge.service;
 
 
 import gemini.griocodechallenge.model.Github;

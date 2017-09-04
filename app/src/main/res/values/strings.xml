@@ -6,4 +6,10 @@
     <string name="start">Start!</string>
     <string name="winner">Winner</string>
     <string name="loser">Loser</string>
+    <string name="fetch">Fetch Data</string>
+    <string name="fetch_error">Unknown Error</string>
+    <string name="g_ok">OK</string>
+    <string name="g_no">NO</string>
+    <string name="g_yes">YES</string>
+    <string name="g_cancel">Cancel</string>
 </resources>

@@ -18,5 +18,6 @@
         <activity android:name=".RepoListActivity"
             android:configChanges="orientation|screenSize"/>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
