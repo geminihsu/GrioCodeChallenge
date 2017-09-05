@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gemini.griocodechallenge.R;
-import gemini.griocodechallenge.model.Github;
 import gemini.griocodechallenge.model.GithubRepoList;
 
 
@@ -35,7 +34,7 @@ public class GitHubRepoAdapter extends RecyclerView.Adapter<GitHubRepoAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.recycler_view, viewGroup, false);
+                .inflate(R.layout.repo_activity_item, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
@@ -43,9 +42,9 @@ public class GitHubRepoAdapter extends RecyclerView.Adapter<GitHubRepoAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         GithubRepoList githubRepo = mItems.get(i);
-        viewHolder.login.setText(githubRepo.getName());
-        viewHolder.start.setText("repos: " + githubRepo.getStargazers_count());
-        //viewHolder.blog.setText("blog: " + github.getBlog());
+        viewHolder.login.setText(githubRepo.getName()+" ,start : "+githubRepo.getStargazers_count());
+        viewHolder.description.setText(githubRepo.getDescription());
+        //viewHolder.startCount.setText(githubRepo.getStargazers_count());
     }
 
     @Override
@@ -55,14 +54,15 @@ public class GitHubRepoAdapter extends RecyclerView.Adapter<GitHubRepoAdapter.Vi
 
     class ViewHolder extends RecyclerView.ViewHolder {
         public TextView login;
-        public TextView start;
+        public TextView description;
+        //public TextView startCount;
         //public TextView blog;
 
         public ViewHolder(View itemView) {
             super(itemView);
             login = (TextView) itemView.findViewById(R.id.login);
-            start = (TextView) itemView.findViewById(R.id.repos);
-            //blog = (TextView) itemView.findViewById(R.id.blog);
+            description = (TextView) itemView.findViewById(R.id.description);
+            //startCount = (TextView) itemView.findViewById(R.id.startCount);
         }
     }
 }

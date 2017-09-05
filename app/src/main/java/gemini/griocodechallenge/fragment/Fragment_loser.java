@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import gemini.griocodechallenge.R;
+import gemini.griocodechallenge.RepoListActivity;
 
 /**
  * Created by User on 2/28/2017.
@@ -18,6 +19,7 @@ import gemini.griocodechallenge.R;
 public class Fragment_loser extends Fragment {
     private static final String TAG = "Fragment_loser";
 
+    private String githubUserName;
 
     @Nullable
     @Override
@@ -25,5 +27,22 @@ public class Fragment_loser extends Fragment {
         View view = inflater.inflate(R.layout.fragment_loser,container,false);
 
         return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle bundle = this.getArguments();
+        if (bundle.containsKey(RepoListActivity.GithubUser)) {
+            githubUserName = bundle.getString(RepoListActivity.GithubUser);
+
+        }
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        getActivity().setTitle(getString(R.string.loser)+githubUserName);
+
     }
 }

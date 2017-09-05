@@ -1,7 +1,6 @@
 package gemini.griocodechallenge.service;
 
 
-import gemini.griocodechallenge.model.Github;
 import gemini.griocodechallenge.model.GithubRepoList;
 import retrofit.http.GET;
 import retrofit.http.Path;

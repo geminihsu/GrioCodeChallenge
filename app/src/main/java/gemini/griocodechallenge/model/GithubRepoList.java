@@ -1,12 +1,14 @@
 package gemini.griocodechallenge.model;
 
+import java.util.Comparator;
+
 /**
  * Created by geminihsu on 04/09/2017.
  */
 
 public class GithubRepoList {
     private String name;
-    private String full_name;
+    private String description;
     private int stargazers_count;
 
     public String getName() {
@@ -17,12 +19,12 @@ public class GithubRepoList {
         this.name = name;
     }
 
-    public String getFull_name() {
-        return full_name;
+    public String getDescription() {
+        return description;
     }
 
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getStargazers_count() {
@@ -32,4 +34,6 @@ public class GithubRepoList {
     public void setStargazers_count(int stargazers_count) {
         this.stargazers_count = stargazers_count;
     }
+
 }
+

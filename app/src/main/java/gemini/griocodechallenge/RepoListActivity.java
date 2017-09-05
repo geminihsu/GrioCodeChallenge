@@ -10,7 +10,6 @@ import android.os.Bundle;
 
 import gemini.griocodechallenge.fragment.Fragment_loser;
 import gemini.griocodechallenge.fragment.Fragment_winner;
-import gemini.griocodechallenge.model.Github;
 
 
 /**
