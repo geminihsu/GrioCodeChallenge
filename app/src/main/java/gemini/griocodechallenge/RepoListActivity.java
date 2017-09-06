@@ -1,5 +1,7 @@
 package gemini.griocodechallenge;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
@@ -39,6 +41,9 @@ public class RepoListActivity extends AppCompatActivity {
 
 
     private SectionsPageAdapter mSectionsPageAdapter;
+
+    private AlertDialog alertDialog;
+    private AlertDialog.Builder alertDialogBuilder;
 
 
     private ViewPager mViewPager;
@@ -81,6 +86,31 @@ public class RepoListActivity extends AppCompatActivity {
                     setupViewPager(mViewPager);
                     tabLayout.setupWithViewPager(mViewPager);
                 }
+            }
+
+            @Override
+            public void error(boolean isError) {
+                alertDialogBuilder = new AlertDialog.Builder(RepoListActivity.this);
+                // set title
+                alertDialogBuilder.setTitle(getString(R.string.fetch));
+                alertDialogBuilder
+                        .setMessage(getString(R.string.fetch_error))
+                        .setCancelable(false)
+                        .setNegativeButton(getString(R.string.g_ok), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Intent intent = new Intent(getApplicationContext(), ForgetPasswordActivity.class);
+                                // startActivity(intent);
+                                alertDialog.dismiss();
+                                alertDialog = null;
+                                finish();
+                            }
+                        });
+                if(alertDialog==null) {
+                    alertDialog = alertDialogBuilder.create();
+                    // show it
+                    alertDialog.show();
+                }
+
             }
         });
 

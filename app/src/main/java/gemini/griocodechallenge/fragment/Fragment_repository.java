@@ -16,6 +16,7 @@ import gemini.griocodechallenge.R;
 import gemini.griocodechallenge.RepoListActivity;
 import gemini.griocodechallenge.adapter.GitHubRepoAdapter;
 import gemini.griocodechallenge.model.GithubRepoList;
+import gemini.griocodechallenge.util.DividerItemDecoration;
 
 
 /**
@@ -69,6 +70,12 @@ public class Fragment_repository extends Fragment {
          * Set up Android CardView/RecycleView
          */
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        mRecyclerView.addItemDecoration(
+                new DividerItemDecoration(getActivity(), R.drawable.divider));
+
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(gitHubRepoAdapter);

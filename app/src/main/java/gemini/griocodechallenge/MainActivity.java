@@ -47,14 +47,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        resultInfo = null;
+    }
     private void findViews()
     {
         winner = (TextView) findViewById(R.id.account_one);
         result = (TextView) findViewById(R.id.result);
-        if(!resultInfo.equals(""))
-        {
-            result.setVisibility(View.VISIBLE);
-            result.setText(resultInfo);
+        if(resultInfo!=null) {
+            if (!resultInfo.equals("")) {
+                result.setVisibility(View.VISIBLE);
+                result.setText(resultInfo);
+            }
         }
         loser = (TextView) findViewById(R.id.account_two);
 

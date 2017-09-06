@@ -42,9 +42,10 @@ public class FetchDataUtil {
                     @Override
                     public void onError(Throwable e) {
                         Log.e("GithubDemo", e.toString());
+                        if(mServerQueryRepoListManagerCallBackFunction != null)
+                            mServerQueryRepoListManagerCallBackFunction.error(true);
 
-
-                    }
+                        }
 
                     @Override
                     public void onNext(List<GithubRepoList> githubRepoLists) {
@@ -86,6 +87,7 @@ public class FetchDataUtil {
         public void setRepoList(List<GithubRepoList> repoLists,String userName);
         public void setRepoTotal(String userName,int count);
         public void isDone(boolean isDone);
+        public void error(boolean isError);
 
     }
 

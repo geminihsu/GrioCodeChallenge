@@ -14,7 +14,9 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@color/cardview_light_background"
+            >
         <LinearLayout
             android:id="@+id/title"
             android:orientation="horizontal"
