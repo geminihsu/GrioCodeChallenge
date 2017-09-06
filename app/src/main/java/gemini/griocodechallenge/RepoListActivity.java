@@ -155,8 +155,8 @@ public class RepoListActivity extends AppCompatActivity {
         b2.putSerializable(GithubUserRepoList, (ArrayList<GithubRepoList>)loserData);
         loser.setArguments(b2);
 
-        adapter.addFragment(winner, getString(R.string.winner) +"-"+ winnerName+"\ntotal:"+githubCountMap.get(winnerName));
-        adapter.addFragment(loser, getString(R.string.loser) +"-"+ loserName+"\ntotal:"+githubCountMap.get(loserName));
+        adapter.addFragment(winner, getString(R.string.winner) +"-"+ winnerName+"\nStarsTotal:"+githubCountMap.get(winnerName));
+        adapter.addFragment(loser, getString(R.string.loser) +"-"+ loserName+"\nStarsTotal:"+githubCountMap.get(loserName));
 
         viewPager.setAdapter(adapter);
     }

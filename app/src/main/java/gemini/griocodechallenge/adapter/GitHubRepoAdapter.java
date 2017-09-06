@@ -26,11 +26,6 @@ public class GitHubRepoAdapter extends RecyclerView.Adapter<GitHubRepoAdapter.Vi
         notifyDataSetChanged();
     }
 
-    public void clear() {
-        mItems.clear();
-        notifyDataSetChanged();
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
@@ -42,9 +37,8 @@ public class GitHubRepoAdapter extends RecyclerView.Adapter<GitHubRepoAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         GithubRepoList githubRepo = mItems.get(i);
-        viewHolder.login.setText(githubRepo.getName()+" ,star : "+githubRepo.getStargazers_count());
+        viewHolder.login.setText(githubRepo.getName()+" ,StarGazersCount : "+githubRepo.getStargazers_count());
         viewHolder.description.setText(githubRepo.getDescription());
-        //viewHolder.startCount.setText(githubRepo.getStargazers_count());
     }
 
     @Override
@@ -55,14 +49,11 @@ public class GitHubRepoAdapter extends RecyclerView.Adapter<GitHubRepoAdapter.Vi
     class ViewHolder extends RecyclerView.ViewHolder {
         public TextView login;
         public TextView description;
-        //public TextView startCount;
-        //public TextView blog;
 
         public ViewHolder(View itemView) {
             super(itemView);
             login = (TextView) itemView.findViewById(R.id.login);
             description = (TextView) itemView.findViewById(R.id.description);
-            //startCount = (TextView) itemView.findViewById(R.id.startCount);
         }
     }
 }
