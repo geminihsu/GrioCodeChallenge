@@ -155,12 +155,13 @@ public class RepoListActivity extends AppCompatActivity {
         b2.putSerializable(GithubUserRepoList, (ArrayList<GithubRepoList>)loserData);
         loser.setArguments(b2);
 
-        adapter.addFragment(winner, getString(R.string.winner) +"-"+ winnerName+"\nStarsTotal:"+githubCountMap.get(winnerName));
-        adapter.addFragment(loser, getString(R.string.loser) +"-"+ loserName+"\nStarsTotal:"+githubCountMap.get(loserName));
+        adapter.addFragment(winner, getString(R.string.winner) +"-"+ winnerName+"\nStarsCntTotal:"+githubCountMap.get(winnerName));
+        adapter.addFragment(loser, getString(R.string.loser) +"-"+ loserName+"\nStarsCntTotal:"+githubCountMap.get(loserName));
 
         viewPager.setAdapter(adapter);
     }
 
+    //found which account is winner and which account is loser
     private void sortStartByCount()
     {
         List<Map.Entry<String, Integer>> list_Data =

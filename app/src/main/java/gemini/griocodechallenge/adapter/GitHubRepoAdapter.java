@@ -37,7 +37,7 @@ public class GitHubRepoAdapter extends RecyclerView.Adapter<GitHubRepoAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         GithubRepoList githubRepo = mItems.get(i);
-        viewHolder.login.setText(githubRepo.getName()+" ,StarGazersCount : "+githubRepo.getStargazers_count());
+        viewHolder.login.setText(githubRepo.getName()+" ,StarCount : "+githubRepo.getStargazers_count());
         viewHolder.description.setText(githubRepo.getDescription());
     }
 
