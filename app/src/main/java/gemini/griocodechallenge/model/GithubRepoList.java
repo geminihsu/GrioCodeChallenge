@@ -1,12 +1,14 @@
 package gemini.griocodechallenge.model;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * Created by geminihsu on 04/09/2017.
  */
 
-public class GithubRepoList {
+public class GithubRepoList implements Serializable {
+    private static final long serialVersionUID = -6446585793905589505L;
     private String name;
     private String description;
     private int stargazers_count;

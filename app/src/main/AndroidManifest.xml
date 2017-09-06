@@ -17,6 +17,8 @@
         </activity>
         <activity android:name=".RepoListActivity"
             android:configChanges="orientation|screenSize"/>
+        <service android:name="gemini.griocodechallenge.util.ThreadPoolUtil$FetchData" >
+        </service>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 

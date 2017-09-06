@@ -1,30 +1,21 @@
 package gemini.griocodechallenge.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import gemini.griocodechallenge.R;
 import gemini.griocodechallenge.RepoListActivity;
 import gemini.griocodechallenge.adapter.GitHubRepoAdapter;
 import gemini.griocodechallenge.model.GithubRepoList;
-import gemini.griocodechallenge.model.GithubRepoListComparator;
-import gemini.griocodechallenge.service.GitHubClient;
-import gemini.griocodechallenge.service.ServiceFactory;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 
 /**
@@ -36,10 +27,9 @@ public class Fragment_winner extends Fragment {
 
     private GitHubRepoAdapter gitHubRepoAdapter = new GitHubRepoAdapter();
     private RecyclerView mRecyclerView;
-    private AlertDialog alertDialog;
-    private AlertDialog.Builder alertDialogBuilder;
 
     private String githubUserName;
+    private List<GithubRepoList> githubRepoList;
 
     @Nullable
     @Override
@@ -58,7 +48,7 @@ public class Fragment_winner extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle.containsKey(RepoListActivity.GithubUser)) {
             githubUserName = bundle.getString(RepoListActivity.GithubUser);
-
+            githubRepoList = (ArrayList<GithubRepoList>)bundle.getSerializable(RepoListActivity.GithubUserRepoList);
         }
     }
     @Override
@@ -66,7 +56,12 @@ public class Fragment_winner extends Fragment {
         super.onStart();
         getActivity().setTitle(getString(R.string.winner)+githubUserName);
         findViews();
-        fetchDataList();
+
+        for(int i = 0; i <githubRepoList.size(); i++) {
+            gitHubRepoAdapter.addData(githubRepoList.get(i));
+        }
+        gitHubRepoAdapter.notifyDataSetChanged();
+        //fetchDataList();
     }
 
     private void findViews()
@@ -83,57 +78,5 @@ public class Fragment_winner extends Fragment {
     }
 
 
-    private void fetchDataList()
-    {
-        GitHubClient service = ServiceFactory.createRetrofitService(GitHubClient.class, GitHubClient.SERVICE_ENDPOINT);
-            service.reposForUser(githubUserName)
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<List<GithubRepoList>>() {
 
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.e("GithubDemo", e.getMessage());
-                            alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                            // set title
-                            alertDialogBuilder.setTitle(getString(R.string.fetch));
-                            alertDialogBuilder
-                                    .setMessage(getString(R.string.fetch_error))
-                                    .setCancelable(false)
-                                    .setNegativeButton(getString(R.string.g_ok), new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            // Intent intent = new Intent(getApplicationContext(), ForgetPasswordActivity.class);
-                                            // startActivity(intent);
-                                            alertDialog.dismiss();
-                                            alertDialog = null;
-                                        }
-                                    });
-                            if(alertDialog==null) {
-                                alertDialog = alertDialogBuilder.create();
-                                // show it
-                                alertDialog.show();
-                            }
-
-
-                        }
-
-                        @Override
-                        public void onNext(List<GithubRepoList> githubRepoLists) {
-
-                            Collections.sort(githubRepoLists, new GithubRepoListComparator());
-                            for(int i = 0 ; i < githubRepoLists.size() ; i++) {
-                                GithubRepoList githubRepo = githubRepoLists.get(i);
-
-                                gitHubRepoAdapter.addData(githubRepo);
-                                Log.e(TAG, githubRepoLists.get(i).getDescription());
-                            }
-                        }
-                    });
-
-    }
 }
