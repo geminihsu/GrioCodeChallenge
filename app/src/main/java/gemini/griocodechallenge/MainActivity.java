@@ -79,18 +79,20 @@ public class MainActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case GITHUB_ACCOUNT_LIST:
-                Bundle info = data.getExtras();
-                if (info != null) {
+                if(data!=null) {
+                    Bundle info = data.getExtras();
+                    if (info != null) {
 
-                    users = (ArrayList<String>) info.getSerializable(BUNDLE_ACCOUNT);
-                    resultInfo = info.getString(MainActivity.BUNDLE_RESULT);
-                    if(resultInfo!=null) {
-                        if (!resultInfo.equals("")) {
-                            result.setVisibility(View.VISIBLE);
-                            result.setText(resultInfo);
+                        users = (ArrayList<String>) info.getSerializable(BUNDLE_ACCOUNT);
+                        resultInfo = info.getString(MainActivity.BUNDLE_RESULT);
+                        if (resultInfo != null) {
+                            if (!resultInfo.equals("")) {
+                                result.setVisibility(View.VISIBLE);
+                                result.setText(resultInfo);
+                            }
                         }
+                        break;
                     }
-                    break;
                 }
         }
     }
