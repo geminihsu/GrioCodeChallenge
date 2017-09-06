@@ -1,4 +1,4 @@
-package gemini.griocodechallenge;
+package gemini.griocodechallenge.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

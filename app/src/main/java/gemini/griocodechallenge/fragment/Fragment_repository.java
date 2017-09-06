@@ -19,8 +19,9 @@ import gemini.griocodechallenge.model.GithubRepoList;
 import gemini.griocodechallenge.util.DividerItemDecoration;
 
 
+
 /**
- * Created by User on 2/28/2017.
+ * Created by geminihsu on 04/09/2017.
  */
 
 public class Fragment_repository extends Fragment {

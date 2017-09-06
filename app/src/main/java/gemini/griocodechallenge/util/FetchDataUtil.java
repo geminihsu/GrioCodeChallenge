@@ -28,7 +28,6 @@ public class FetchDataUtil {
 
         final List<GithubRepoList> result = new ArrayList<>();
         GitHubClient service = ServiceFactory.createRetrofitService(GitHubClient.class, GitHubClient.SERVICE_ENDPOINT);
-        //for(String githubUserName : userName) {
         service.reposForUser(userName)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -56,10 +55,8 @@ public class FetchDataUtil {
                         for (int i = 0; i < githubRepoLists.size(); i++) {
                             GithubRepoList githubRepo = githubRepoLists.get(i);
 
-                            //gitHubRepoAdapter.addData(githubRepo);
                             result.add(githubRepo);
                             total+=githubRepo.getStargazers_count();
-                            //Log.e(TAG, githubRepoLists.get(i).getDescription());
                         }
 
 
@@ -72,8 +69,6 @@ public class FetchDataUtil {
                     }
                 });
 
-
-        // }
     }
 
     private ServerQueryRepoListManagerCallBackFunction mServerQueryRepoListManagerCallBackFunction;

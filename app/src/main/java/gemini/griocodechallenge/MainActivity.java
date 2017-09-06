@@ -16,10 +16,11 @@ public class MainActivity extends AppCompatActivity {
     public final static String BUNDLE_ACCOUNT = "users";
     public final static String BUNDLE_RESULT = "result";
 
+    public final static int GITHUB_ACCOUNT_LIST = 1;
 
     private Button fetch;
-    private TextView winner;
-    private TextView loser;
+    private TextView user1;
+    private TextView user2;
     private TextView result;
 
     private String resultInfo = "";
@@ -29,19 +30,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        users = new ArrayList<>();
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        Bundle bundle = this.getIntent().getExtras();
-        if (bundle != null) {
-            resultInfo = bundle.getString(MainActivity.BUNDLE_RESULT);
-            users = (ArrayList<String>)bundle.getSerializable(MainActivity.BUNDLE_ACCOUNT);
-        }else
-            users = new ArrayList<>();
 
         this.findViews();
 
@@ -54,30 +49,50 @@ public class MainActivity extends AppCompatActivity {
     }
     private void findViews()
     {
-        winner = (TextView) findViewById(R.id.account_one);
+        user1 = (TextView) findViewById(R.id.account_one);
         result = (TextView) findViewById(R.id.result);
-        if(resultInfo!=null) {
-            if (!resultInfo.equals("")) {
-                result.setVisibility(View.VISIBLE);
-                result.setText(resultInfo);
-            }
-        }
-        loser = (TextView) findViewById(R.id.account_two);
+
+        user2 = (TextView) findViewById(R.id.account_two);
 
 
         fetch = (Button) findViewById(R.id.start);
         fetch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                users.add(winner.getText().toString());
-                users.add(loser.getText().toString());
+                if(!users.contains(user1.getText().toString()))
+                     users.add(user1.getText().toString());
+                if(!users.contains(user2.getText().toString()))
+                     users.add(user2.getText().toString());
 
-                Intent intent = new Intent(getApplicationContext(), RepoListActivity.class);
+                Intent intent = new Intent(MainActivity.this, RepoListActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable(BUNDLE_ACCOUNT,(ArrayList<String>)users);
                 intent.putExtras(data);
-                startActivity(intent);
+                startActivityForResult(intent,GITHUB_ACCOUNT_LIST);
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case GITHUB_ACCOUNT_LIST:
+                Bundle info = data.getExtras();
+                if (info != null) {
+
+                    users = (ArrayList<String>) info.getSerializable(BUNDLE_ACCOUNT);
+                    resultInfo = info.getString(MainActivity.BUNDLE_RESULT);
+                    if(resultInfo!=null) {
+                        if (!resultInfo.equals("")) {
+                            result.setVisibility(View.VISIBLE);
+                            result.setText(resultInfo);
+                        }
+                    }
+                    break;
+                }
+        }
+    }
+
 }
