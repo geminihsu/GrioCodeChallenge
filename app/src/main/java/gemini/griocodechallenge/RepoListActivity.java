@@ -1,12 +1,17 @@
 package gemini.griocodechallenge;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.view.Menu;
+import android.view.MenuItem;
 
 
 import java.util.ArrayList;
@@ -16,8 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gemini.griocodechallenge.fragment.Fragment_loser;
-import gemini.griocodechallenge.fragment.Fragment_winner;
+import gemini.griocodechallenge.fragment.Fragment_repository;
 import gemini.griocodechallenge.model.GithubRepoList;
 import gemini.griocodechallenge.util.FetchDataUtil;
 
@@ -30,6 +34,8 @@ public class RepoListActivity extends AppCompatActivity {
     public final static String TAG = RepoListActivity.class.toString();
     public final static String GithubUser = "GithubUser";
     public final static String GithubUserRepoList = "GithubUserRepoList";
+    //actionBar item Id
+    private final int ACTIONBAR_MENU_ITEM_ADD = 0x0001;
 
 
     private SectionsPageAdapter mSectionsPageAdapter;
@@ -57,10 +63,7 @@ public class RepoListActivity extends AppCompatActivity {
 
             @Override
             public void setRepoList(List<GithubRepoList> repoLists,String userName) {
-                for (int i = 0; i < repoLists.size(); i++) {
-                    GithubRepoList githubRepo = repoLists.get(i);
-                    //Log.e(TAG, githubRepo.getDescription());
-                }
+
                 githubRepoListMap.put(userName,repoLists);
 
             }
@@ -80,11 +83,9 @@ public class RepoListActivity extends AppCompatActivity {
                 }
             }
         });
-        //Log.d(TAG, "onCreate: Starting.");
+
         Bundle bundle = this.getIntent().getExtras();
         if (bundle != null) {
-           // winnerUser = bundle.getString(MainActivity.BUNDLE_WINNER);
-           // loserUser = bundle.getString(MainActivity.BUNDLE_LOSER);
             users = (ArrayList<String>)bundle.getSerializable(MainActivity.BUNDLE_ACCOUNT);
         }
 
@@ -110,19 +111,61 @@ public class RepoListActivity extends AppCompatActivity {
         super.onStart();
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuItem item = menu.add(Menu.NONE, ACTIONBAR_MENU_ITEM_ADD, Menu.NONE, getString(R.string.add));
+        SpannableString spanString = new SpannableString(item.getTitle().toString());
+        spanString.setSpan(new ForegroundColorSpan(Color.WHITE), 0, spanString.length(), 0); //fix the color to white
+        item.setTitle(spanString);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case ACTIONBAR_MENU_ITEM_ADD:
+                String result = "";
+                for (int i = 0; i < users.size() ; i++)
+                {
+                    result += users.get(i);
+                    if(i!= users.size()-1)
+                        result += " V.S ";
+                }
+                result +="\nWinner: "+winnerName+", Loser: "+loserName;
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Bundle data = new Bundle();
+                data.putString(MainActivity.BUNDLE_RESULT,result);
+                data.putSerializable(MainActivity.BUNDLE_ACCOUNT,(ArrayList<String>)users);
+                intent.putExtras(data);
+                startActivity(intent);
+                return true;
+            case android.R.id.home:
+                // app icon in action bar clicked; goto parent activity.
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     private void setupViewPager(ViewPager viewPager) {
 
         List<GithubRepoList> winnerData = githubRepoListMap.get(winnerName);
         List<GithubRepoList> loserData = githubRepoListMap.get(loserName);
 
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        Fragment winner = new Fragment_winner();
+
+        //created winner page
+        Fragment winner = new Fragment_repository();
         Bundle b1 = new Bundle();
         b1.putString(GithubUser, winnerName);
         b1.putSerializable(GithubUserRepoList, (ArrayList<GithubRepoList>)winnerData);
         winner.setArguments(b1);
 
-        Fragment loser = new Fragment_loser();
+        //created loser page
+        Fragment loser = new Fragment_repository();
         Bundle b2 = new Bundle();
         b2.putString(GithubUser, loserName);
         b2.putSerializable(GithubUserRepoList, (ArrayList<GithubRepoList>)loserData);
@@ -130,7 +173,7 @@ public class RepoListActivity extends AppCompatActivity {
 
         adapter.addFragment(winner, getString(R.string.winner) +"-"+ winnerName+"\ntotal:"+githubCountMap.get(winnerName));
         adapter.addFragment(loser, getString(R.string.loser) +"-"+ loserName+"\ntotal:"+githubCountMap.get(loserName));
-        //adapter.addFragment(new Tab3Fragment(), "TAB3");
+
         viewPager.setAdapter(adapter);
     }
 

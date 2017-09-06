@@ -13,36 +13,50 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
-    //public final static String BUNDLE_WINNER = "winner";
-    //public final static String BUNDLE_LOSER = "loser";
     public final static String BUNDLE_ACCOUNT = "users";
+    public final static String BUNDLE_RESULT = "result";
 
 
     private Button fetch;
     private TextView winner;
     private TextView loser;
+    private TextView result;
+
+    private String resultInfo = "";
+    private ArrayList<String> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        this.findViews();
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null) {
+            resultInfo = bundle.getString(MainActivity.BUNDLE_RESULT);
+            users = (ArrayList<String>)bundle.getSerializable(MainActivity.BUNDLE_ACCOUNT);
+        }else
+            users = new ArrayList<>();
 
-        //this.setLister();
+        this.findViews();
 
     }
 
     private void findViews()
     {
         winner = (TextView) findViewById(R.id.account_one);
+        result = (TextView) findViewById(R.id.result);
+        if(!resultInfo.equals(""))
+        {
+            result.setVisibility(View.VISIBLE);
+            result.setText(resultInfo);
+        }
         loser = (TextView) findViewById(R.id.account_two);
-        final ArrayList<String> users = new ArrayList<>();
 
 
         fetch = (Button) findViewById(R.id.start);
@@ -55,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), RepoListActivity.class);
                 Bundle data = new Bundle();
                 data.putSerializable(BUNDLE_ACCOUNT,(ArrayList<String>)users);
-                //data.putString(BUNDLE_LOSER,loser.getText().toString());
                 intent.putExtras(data);
                 startActivity(intent);
             }
